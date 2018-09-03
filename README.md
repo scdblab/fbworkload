@@ -18,17 +18,17 @@ java -jar tracegen.jar trace_specification.properties /tmp/fb-trace
   <tr>
     <td>read</td>
     <td>A value between 0.0 to 1.0</td>
-    <td>Percentage of read requests in the generated trace</td>
+    <td>The percentage of read requests in the generated trace</td>
   </tr>
   <tr>
     <td>replace</td>
     <td>A value between 0.0 to 1.0</td>
-    <td>Percentage of replace requests in the generated trace</td>
+    <td>The percentage of replace requests in the generated trace</td>
   </tr>
   <tr>
     <td>update</td>
     <td>A value between 0.0 to 1.0</td>
-    <td>Percentage of update requests in the generated trace</td>
+    <td>The percentage of update requests in the generated trace</td>
   </tr>
   <tr>
     <td>items</td>
@@ -48,8 +48,8 @@ The generated trace is in the following format.
   <tr>
     <td>Operation</td>
         <td>Key</td>
-        <td>Key size</td>
-        <td>Value size</td>
+        <td>Key size (bytes)</td>
+        <td>Value size (bytes)</td>
         <td>Timestamp (micro seconds)</td>
   </tr>
 </table>
