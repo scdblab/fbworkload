@@ -89,7 +89,7 @@ The generated trace is in the following format.
         <td>Timestamp (microseconds)</td>
   </tr>
 </table>
-Operation is one of:  {READ, REPLACE, DELETE}. This is an example output. It represents a read request on key 10499 at 12 microseconds relative to the first request. The key size is 58 bytes and the value size is 9 bytes. 
+Operation is one of:  {READ, REPLACE, DELETE}. This is an example output. It represents a read request on key 10499 at 12 microseconds relative to the first request. Its referenced key size is 58 bytes and the value size is 9 bytes. 
 
 ```
 READ,10499,58,9,12
