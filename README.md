@@ -1,5 +1,5 @@
 # fbworkload
-This project generates a social networking workload based on published stats by Facebook [1, 2]. Berk et. al [1] provides statistical modelings of key-size, value-size, and inter-arrival gap distributions. Yuehai et. al [2] extends [1] by presenting more analysis results on cache misses.
+This project generates a social networking workload based on published stats by Facebook [1, 2]. Berk et al. [1] provides statistical modelings of key-size, value-size, and inter-arrival gap distributions. Yuehai et al. [2] extends [1] by presenting more analysis results on cache misses.
 
 [1] Berk Atikoglu, Yuehai Xu, Eitan Frachtenberg, Song Jiang, and Mike Paleczny. 2012. Workload analysis of a large-scale key-value store. In Proceedings of the 12th ACM SIGMETRICS/PERFORMANCE joint international conference on Measurement and Modeling of Computer Systems (SIGMETRICS '12). ACM, New York, NY, USA, 53-64. DOI=http://dx.doi.org/10.1145/2254756.2254766
 
