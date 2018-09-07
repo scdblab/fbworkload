@@ -2,8 +2,10 @@ package edu.usc.facebook;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class FBWorkloadSimulator {
 
@@ -28,20 +30,23 @@ public class FBWorkloadSimulator {
 
 		double read = 0.95;
 		int numRecords = 10000000;
-		int totalReqs = 30000000;
-		long failStart = 300;
+		int totalReqs = 50000000;
+		long failStart = 500;
 		long failEnd = failStart + failDuration;
 		int totalCaches = 100;
 		int totalFrags = 5000;
 		int totalFailCaches = 20;
 		double cacheSize = 0.5;
 		long outputInterval = 1000 * 1000;
-		int warmup = (int) (numRecords * cacheSize * 0.22);
+		int warmup = (int) (numRecords * cacheSize * 0.5);
 
 		System.out.println(totalReqs + " " + failStart + " " + failEnd);
 
 		// Caches
 		List<LRUCache> caches = new ArrayList<>();
+		List<Integer> dirtyKeys = new ArrayList<>();
+		Set<Integer> dirtyKeysSet = new HashSet<>();
+
 		for (int i = 0; i < totalCaches; i++) {
 			caches.add(new LRUCache(i, (int) (numRecords * cacheSize * fbworkload.getMeanRequestSize() / totalCaches)));
 		}
@@ -112,12 +117,11 @@ public class FBWorkloadSimulator {
 
 			if (interval > failEnd) {
 				if (!recoveryMode) {
-					// System.out.println("Recovered");
+					System.out.println(String.format("dirtykeys,%d,%d", dirtyKeys.size(), dirtyKeysSet.size()));
 				}
 				recoveryMode = true;
 			} else if (interval > failStart) {
 				if (!failMode) {
-					// System.out.println("Failed");
 					if (Config.DISCARD.equals(config)) {
 						for (int c = 0; c < totalFailCaches; c++) {
 							caches.get(c).clear();
@@ -144,19 +148,34 @@ public class FBWorkloadSimulator {
 						if (val != -1) {
 							hits++;
 						}
+						caches.get(cache).set(key, val, size);
 					}
-					caches.get(cache).set(key, database[key], size);
+
+					if (val == -1) {
+						val = database[key];
+						caches.get(cache).set(key, database[key], size);
+					}
 				} else {
 					// hit
 					hits++;
-					if (val != database[key]) {
-						if (recoveryMode && Config.GEMINI.equals(config)) {
-							caches.get(cache).delete(key);
-							caches.get(cache).set(key, database[key], size);
-						} else {
-							staleReads++;
+					if (recoveryMode && Config.GEMINI.equals(config) && dirtyKeysSet.contains(key)) {
+						hits--;
+						dirtyKeysSet.remove(key);
+						caches.get(cache).delete(key);
+						int secondaryCache = failFragments.get(key % failFragments.size());
+						val = caches.get(secondaryCache).get(key);
+						if (val != -1) {
+							hits++;
+							caches.get(cache).set(key, val, size);
 						}
 					}
+					if (val == -1) {
+						val = database[key];
+						caches.get(cache).set(key, database[key], size);
+					}
+				}
+				if (val != database[key]) {
+					staleReads++;
 				}
 			} else {
 				// Update
@@ -166,6 +185,14 @@ public class FBWorkloadSimulator {
 					int secondaryCache = failFragments.get(key % failFragments.size());
 					caches.get(secondaryCache).delete(key);
 				}
+				if (failMode && Config.GEMINI.equals(config)) {
+					int primaryCache = fragments.get(key % fragments.size());
+					if (primaryCache < totalFailCaches) {
+						dirtyKeys.add(key);
+						dirtyKeysSet.add(key);
+					}
+				}
+
 				database[key] = nextVal;
 				nextVal += 1;
 			}
@@ -185,7 +212,6 @@ public class FBWorkloadSimulator {
 				now = 0;
 			}
 		}
-		// System.out.println(now);
 		interval++;
 		System.out.println(String.format("%d,%d,%d,%d,%.2f,%.2f", interval, reads, hits, staleReads,
 				(hits * 100.0) / reads, (staleReads * 100.0) / reads));
@@ -193,7 +219,6 @@ public class FBWorkloadSimulator {
 	}
 
 	public static void main(String[] args) {
-		// StaleRateExp();
 		HitRateExp();
 	}
 
@@ -224,7 +249,7 @@ public class FBWorkloadSimulator {
 		System.out.println();
 		System.out.println();
 		System.out.println();
-		for (int i = 0; i < discardStats.reads.size(); i++) {
+		for (int i = 400; i < discardStats.reads.size(); i++) {
 			if (i < staleStats.hits.size() && i < geminiStats.hits.size()) {
 				System.out.println(String.format("%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f", i, discardStats.hits.get(i),
 						staleStats.hits.get(i), geminiStats.hits.get(i), discardStats.staleReads.get(i),

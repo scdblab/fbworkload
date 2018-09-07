@@ -55,7 +55,7 @@ public class LRUCache {
 		}
 	}
 
-	public void remove(Node n) {
+	private void remove(Node n) {
 		if (n.pre != null) {
 			n.pre.next = n.next;
 		} else {
@@ -69,7 +69,7 @@ public class LRUCache {
 		}
 	}
 
-	public void setHead(Node n) {
+	private void setHead(Node n) {
 		n.next = head;
 		n.pre = null;
 
