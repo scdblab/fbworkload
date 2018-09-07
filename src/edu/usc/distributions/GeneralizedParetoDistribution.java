@@ -1,11 +1,11 @@
-package edu.usc.facebook;
+package edu.usc.distributions;
 
 /**
  * https://en.wikipedia.org/wiki/Generalized_Pareto_distribution
  * 
  * @author haoyuh
  */
-public class GeneralizedParetoDistribution {
+public class GeneralizedParetoDistribution extends Distribution {
 	private final double loc;
 	private final double scale;
 	private final double shape;

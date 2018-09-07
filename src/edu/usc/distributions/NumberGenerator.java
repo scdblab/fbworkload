@@ -1,4 +1,4 @@
-package edu.usc.facebook;
+package edu.usc.distributions;
 
 /**
  * A generator that is capable of generating numeric values.

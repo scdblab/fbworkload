@@ -1,4 +1,4 @@
-package edu.usc.facebook;
+package edu.usc.distributions;
 
 import java.util.Random;
 
@@ -233,12 +233,8 @@ public class ZipfianGenerator extends NumberGenerator {
 	static double zetastatic(long st, long n, double theta, double initialsum) {
 		double sum = initialsum;
 		for (long i = st; i < n; i++) {
-
 			sum += 1 / (Math.pow(i + 1, theta));
 		}
-
-		// System.out.println("countforzeta="+countforzeta);
-
 		return sum;
 	}
 
@@ -251,7 +247,7 @@ public class ZipfianGenerator extends NumberGenerator {
 	 *            The number of items in the distribution.
 	 * @return The next item in the sequence.
 	 */
-	long nextLong(long itemcount) {
+	public long nextLong(long itemcount) {
 		// from "Quickly Generating Billion-Record Synthetic Databases", Jim Gray et al,
 		// SIGMOD 1994
 

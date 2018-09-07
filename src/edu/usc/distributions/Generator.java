@@ -1,4 +1,4 @@
-package edu.usc.facebook;
+package edu.usc.distributions;
 
 /**
  * An expression that generates a sequence of values, following some
