@@ -6,21 +6,33 @@ import java.util.List;
 
 public class TemporalLocalityGenerator {
 
-	private double newKeys = 88.5;
-	private double lastHour = 4;
 	private long currentMinKey;
 
-	private List<Double> locality = new ArrayList<Double>(Arrays.<Double>asList(88.5, 4.0, 2.5, 0.8, 0.4, 0.3));
+	private List<Double> locality = new ArrayList<Double>(
+			Arrays.<Double>asList(0.885, 0.04, 0.025, 0.008, 0.004, 0.003));
 
 	public TemporalLocalityGenerator() {
 		super();
-		double remaining = 100.0 - locality.stream().mapToDouble(i -> {
+		double remaining = 1.0 - locality.stream().mapToDouble(i -> {
 			return i;
 		}).sum();
-		while (remaining > 0) {
-			remaining -= 0.1;
-			locality.add(0.1);
+		while (remaining > 0.003) {
+			remaining -= 0.002;
+			locality.add(0.002);
 		}
+		while (remaining >= 0) {
+			remaining -= 0.001;
+			if (remaining < 0) {
+				break;
+			}
+			locality.add(0.001);
+		}
+		double sum = locality.stream().mapToDouble(i -> {
+			return i;
+		}).sum();
+		Utility.CHECK(sum == 1.0, sum + " locality sum does not equal to 1.0");
+
+		System.out.println("Temporal locality hours " + locality.size());
 	}
 
 	public int size() {

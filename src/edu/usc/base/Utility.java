@@ -13,4 +13,11 @@ public class Utility {
 		}
 		return -(index + 1);
 	}
+
+	public static void CHECK(boolean condition, String message) {
+		if (!condition) {
+			System.out.println("Condition check failed: " + message);
+			System.exit(0);
+		}
+	}
 }

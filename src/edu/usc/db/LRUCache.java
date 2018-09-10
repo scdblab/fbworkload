@@ -4,27 +4,27 @@ import java.util.HashMap;
 
 public class LRUCache {
 	class Node {
-		int key;
+		long key;
 		int value;
 		int size;
 		Node pre;
 		Node next;
 
-		public Node(int key, int value, int size) {
+		public Node(long key, int value, int size) {
 			this.key = key;
 			this.value = value;
 			this.size = size;
 		}
 	}
 
-	int capacity;
-	int currentCapacity;
-	HashMap<Integer, Node> map = new HashMap<Integer, Node>();
+	long capacity;
+	long currentCapacity;
+	HashMap<Long, Node> map = new HashMap<Long, Node>();
 	Node head = null;
 	Node end = null;
 	int index = 0;
 
-	public LRUCache(int index, int capacity) {
+	public LRUCache(int index, long capacity) {
 		this.index = index;
 		this.capacity = capacity;
 		currentCapacity = 0;
@@ -37,7 +37,7 @@ public class LRUCache {
 		currentCapacity = 0;
 	}
 
-	public int get(int key) {
+	public int get(long key) {
 		if (map.containsKey(key)) {
 			Node n = map.get(key);
 			remove(n);
@@ -47,7 +47,7 @@ public class LRUCache {
 		return -1;
 	}
 
-	public void delete(int key) {
+	public void delete(long key) {
 		Node node = map.remove(key);
 		if (node != null) {
 			remove(node);
@@ -82,7 +82,7 @@ public class LRUCache {
 			end = head;
 	}
 
-	public void set(int key, int value, int size) {
+	public void set(long key, int value, int size) {
 		if (size >= capacity) {
 			return;
 		}

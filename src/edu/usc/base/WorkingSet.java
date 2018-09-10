@@ -1,5 +1,6 @@
 package edu.usc.base;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class WorkingSet {
@@ -17,7 +18,7 @@ public class WorkingSet {
 		nums = new long[this.numKeys.size() + 1];
 		nums[0] = 0;
 		for (int i = 1; i <= numKeys.size(); i++) {
-			nums[i] = nums[i - 1] + numKeys.get(i);
+			nums[i] = nums[i - 1] + numKeys.get(i - 1);
 		}
 	}
 
@@ -44,6 +45,12 @@ public class WorkingSet {
 		}
 		long num = key - flat;
 		return minKeys.get(i - 1) + num;
+	}
+
+	@Override
+	public String toString() {
+		return "WorkingSet [size=" + size + ", minKeys=" + minKeys + "\n numKeys=" + numKeys + "\n nums="
+				+ Arrays.toString(nums) + "]";
 	}
 
 }

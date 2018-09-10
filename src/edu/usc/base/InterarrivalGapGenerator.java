@@ -90,6 +90,10 @@ public class InterarrivalGapGenerator {
 		return (int) this.interarrivalDist.get(hour).getMean();
 	}
 
+	public int mean() {
+		return (int) this.interarrivalDailyDist.getMean();
+	}
+
 	public int generateInterarrivalTime(int hour) {
 		return Utility.select(this.interarrivalCDF.get(hour), rand.nextDouble(),
 				(int) this.interarrivalDist.get(hour).getMean(), this.interarrivalCDF.get(hour).length - 1);

@@ -254,31 +254,29 @@ public class ZipfianGenerator extends NumberGenerator {
 		if (itemcount != countforzeta) {
 
 			// have to recompute zetan and eta, since they depend on itemcount
-			synchronized (this) {
-				if (itemcount > countforzeta) {
-					// System.err.println("WARNING: Incrementally recomputing Zipfian distribtion.
-					// (itemcount="+itemcount+"
-					// countforzeta="+countforzeta+")");
+			if (itemcount > countforzeta) {
+				// System.err.println("WARNING: Incrementally recomputing Zipfian distribtion.
+				// (itemcount="+itemcount+"
+				// countforzeta="+countforzeta+")");
 
-					// we have added more items. can compute zetan incrementally, which is cheaper
-					zetan = zeta(countforzeta, itemcount, theta, zetan);
-					eta = (1 - Math.pow(2.0 / items, 1 - theta)) / (1 - zeta2theta / zetan);
-				} else if ((itemcount < countforzeta) && (allowitemcountdecrease)) {
-					// have to start over with zetan
-					// note : for large itemsets, this is very slow. so don't do it!
+				// we have added more items. can compute zetan incrementally, which is cheaper
+				zetan = zeta(countforzeta, itemcount, theta, zetan);
+				eta = (1 - Math.pow(2.0 / items, 1 - theta)) / (1 - zeta2theta / zetan);
+			} else if ((itemcount < countforzeta) && (allowitemcountdecrease)) {
+				// have to start over with zetan
+				// note : for large itemsets, this is very slow. so don't do it!
 
-					// TODO: can also have a negative incremental computation, e.g. if you decrease
-					// the number of items,
-					// then just subtract the zeta sequence terms for the items that went away. This
-					// would be faster than
-					// recomputing from scratch when the number of items decreases
+				// TODO: can also have a negative incremental computation, e.g. if you decrease
+				// the number of items,
+				// then just subtract the zeta sequence terms for the items that went away. This
+				// would be faster than
+				// recomputing from scratch when the number of items decreases
 
-					System.err.println("WARNING: Recomputing Zipfian distribtion. This is slow and should be avoided. "
-							+ "(itemcount=" + itemcount + " countforzeta=" + countforzeta + ")");
+				System.err.println("WARNING: Recomputing Zipfian distribtion. This is slow and should be avoided. "
+						+ "(itemcount=" + itemcount + " countforzeta=" + countforzeta + ")");
 
-					zetan = zeta(itemcount, theta);
-					eta = (1 - Math.pow(2.0 / items, 1 - theta)) / (1 - zeta2theta / zetan);
-				}
+				zetan = zeta(itemcount, theta);
+				eta = (1 - Math.pow(2.0 / items, 1 - theta)) / (1 - zeta2theta / zetan);
 			}
 		}
 

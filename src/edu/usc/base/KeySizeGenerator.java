@@ -28,4 +28,8 @@ public class KeySizeGenerator {
 				this.keySizeCDF.length - 1);
 	}
 
+	public GeneralizedExtremeValueDistribution getKeySizeDist() {
+		return keySizeDist;
+	}
+
 }

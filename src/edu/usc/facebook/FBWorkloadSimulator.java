@@ -226,9 +226,9 @@ public class FBWorkloadSimulator {
 	}
 
 	public static void main(String[] args) {
-		// StaleRateExp();
-		// HitRateExp();
-		run(Config.GEMINI, 100);
+		 StaleRateExp();
+//		 HitRateExp();
+//		run(Config.GEMINI, 100);
 	}
 
 	private static void StaleRateExp() {
