@@ -5,20 +5,27 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Properties;
 
+import edu.usc.db.Cache;
+import edu.usc.db.LRUCache;
+import edu.usc.db.SlabLRUCache;
+
 public class Configuration {
 	private double read;
 	private double replace;
 	private double delete;
 	private int hours;
 	private long seed;
+	private double zipf;
 	private boolean enableSize;
 	private boolean enableLoadChange;
 	private boolean enableSpatial;
 	private boolean enableTemporal;
+	private String cacheType;
 
 	public Configuration(String configFile) throws Exception {
 		Properties prop = new Properties();
 		prop.load(new BufferedReader(new FileReader(new File(configFile))));
+		zipf = Double.parseDouble(prop.getProperty("zipf"));
 		read = Double.parseDouble(prop.getProperty("read"));
 		replace = Double.parseDouble(prop.getProperty("replace"));
 		delete = Double.parseDouble(prop.getProperty("delete"));
@@ -28,6 +35,7 @@ public class Configuration {
 		enableLoadChange = Boolean.parseBoolean(prop.getProperty("enableLoadChange"));
 		enableSpatial = Boolean.parseBoolean(prop.getProperty("enableSpatial"));
 		enableTemporal = Boolean.parseBoolean(prop.getProperty("enableTemporal"));
+		cacheType = prop.getProperty("cacheType");
 	}
 
 	public Configuration(double read, double replace, double delete, int hours, long seed, boolean enableSize,
@@ -42,6 +50,14 @@ public class Configuration {
 		this.enableLoadChange = enableLoadChange;
 		this.enableSpatial = enableSpatial;
 		this.enableTemporal = enableTemporal;
+	}
+
+	public String getCacheType() {
+		return cacheType;
+	}
+
+	public double getZipf() {
+		return zipf;
 	}
 
 	public void setRead(double read) {

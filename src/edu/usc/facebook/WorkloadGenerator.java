@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import edu.usc.base.Access;
 import edu.usc.base.Access.Operation;
 import edu.usc.base.Configuration;
 import edu.usc.base.InterarrivalGapGenerator;
@@ -33,9 +32,9 @@ public class WorkloadGenerator {
 	private final File outputFile;
 	private BufferedWriter bw;
 
-	private final TraceRequestProcessor processor;
+	private final Client processor;
 
-	public WorkloadGenerator(Configuration config, TraceRequestProcessor processor, File outputFile) {
+	public WorkloadGenerator(Configuration config, Client processor, File outputFile) {
 		super();
 		this.config = config;
 		this.processor = processor;
@@ -57,7 +56,7 @@ public class WorkloadGenerator {
 	private void write(String line) {
 		try {
 			bw.write(line + "\n");
-			bw.flush();
+			// bw.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,7 +81,7 @@ public class WorkloadGenerator {
 
 			WorkingSet workingSet = temporalLocalityGenerator.computeWorkingSet(workingSets, workingSetSize);
 			workingSets.add(0, workingSet);
-			KeyAccessGenerator keyAccess = new KeyAccessGenerator(rand, workingSetSize);
+			KeyAccessGenerator keyAccess = new KeyAccessGenerator(rand, config, workingSetSize);
 
 			int second = 1;
 			for (long now = 0; now < ONE_HOUR;) {
@@ -105,10 +104,10 @@ public class WorkloadGenerator {
 				} else {
 					operation = Operation.DELETE;
 				}
-				processor.access(new Access(operation, realKey, keySize, valSize, timestamp));
+				processor.access(operation, realKey, keySize, valSize, timestamp);
 
 				if (now > second * ONE_SECOND) {
-					write(hour * 60 * 60 + second + "," + processor.outputStats());
+					write(processor.outputStats(hour * 60 * 60 + second));
 					second++;
 				}
 			}
@@ -121,7 +120,7 @@ public class WorkloadGenerator {
 
 	public void runYCSB(long databaseSize) {
 		long throughputsec = 1000 * 1000 / this.interarrivalGapGenerator.mean();
-		KeyAccessGenerator keyAccess = new KeyAccessGenerator(rand, databaseSize);
+		KeyAccessGenerator keyAccess = new KeyAccessGenerator(rand, config, databaseSize);
 		int meanKey = (int) keySizeGenerator.getKeySizeDist().getMean();
 		int meanVal = (int) valueSizeGenerator.getValueSizeDist().getMean();
 		for (int hour = 0; hour < config.getHours(); hour++) {
@@ -148,10 +147,10 @@ public class WorkloadGenerator {
 					} else {
 						operation = Operation.DELETE;
 					}
-					processor.access(new Access(operation, key, keySize, valSize, timestamp));
+					processor.access(operation, key, keySize, valSize, timestamp);
 
 					if (now > second * ONE_SECOND) {
-						write(hour * 60 * 60 + second + "," + processor.outputStats());
+						write(processor.outputStats(hour * 60 * 60 + second));
 						second++;
 					}
 
@@ -177,9 +176,9 @@ public class WorkloadGenerator {
 						} else {
 							operation = Operation.DELETE;
 						}
-						processor.access(new Access(operation, key, keySize, valSize, 0));
+						processor.access(operation, key, keySize, valSize, 0);
 					}
-					write(hour * 60 * 60 + second + "," + processor.outputStats());
+					write(processor.outputStats(hour * 60 * 60 + second));
 				}
 			}
 		}

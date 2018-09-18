@@ -2,7 +2,7 @@ package edu.usc.db;
 
 import java.util.HashMap;
 
-public class LRUCache {
+public class LRUCache implements Cache {
 	class Node {
 		long key;
 		int value;
@@ -18,7 +18,7 @@ public class LRUCache {
 	}
 
 	long capacity;
-	long currentCapacity;
+	long availableCapacity;
 	HashMap<Long, Node> map = new HashMap<Long, Node>();
 	Node head = null;
 	Node end = null;
@@ -27,14 +27,14 @@ public class LRUCache {
 	public LRUCache(int index, long capacity) {
 		this.index = index;
 		this.capacity = capacity;
-		currentCapacity = 0;
+		availableCapacity = 0;
 	}
 
 	public void clear() {
 		map.clear();
 		head = null;
 		end = null;
-		currentCapacity = 0;
+		availableCapacity = 0;
 	}
 
 	public int get(long key) {
@@ -51,7 +51,7 @@ public class LRUCache {
 		Node node = map.remove(key);
 		if (node != null) {
 			remove(node);
-			currentCapacity -= node.size;
+			availableCapacity -= node.size;
 		}
 	}
 
@@ -82,9 +82,10 @@ public class LRUCache {
 			end = head;
 	}
 
-	public void set(long key, int value, int size) {
+	public int set(long key, int value, int size) {
+		int evictions = 0;
 		if (size >= capacity) {
-			return;
+			return -1;
 		}
 		if (map.containsKey(key)) {
 			Node old = map.get(key);
@@ -93,14 +94,21 @@ public class LRUCache {
 			setHead(old);
 		} else {
 			Node created = new Node(key, value, size);
-			while (currentCapacity + size > capacity) {
-				currentCapacity -= end.size;
+			while (availableCapacity + size > capacity) {
+				availableCapacity -= end.size;
 				map.remove(end.key);
 				remove(end);
+				evictions++;
 			}
 			setHead(created);
 			map.put(key, created);
-			currentCapacity += size;
+			availableCapacity += size;
 		}
+		return evictions;
+	}
+
+	@Override
+	public int size() {
+		return map.size();
 	}
 }

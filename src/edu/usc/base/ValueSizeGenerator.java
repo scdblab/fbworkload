@@ -24,8 +24,9 @@ public class ValueSizeGenerator {
 	}
 
 	public int get() {
-		return Utility.select(this.valueSizeCDF, rand.nextDouble(), (int) this.valueSizeDist.getMean(),
+		int val = Utility.select(this.valueSizeCDF, rand.nextDouble(), (int) this.valueSizeDist.getMean(),
 				this.valueSizeCDF.length - 1);
+		return val;
 	}
 
 	public GeneralizedParetoDistribution getValueSizeDist() {

@@ -36,15 +36,16 @@ public class WorkingSet {
 
 	public long mapKey(long key) {
 		int i = 0;
-		long flat = 0;
 		for (; i < nums.length; i++) {
 			if (key + 1 <= nums[i]) {
 				break;
 			}
-			flat += nums[i];
 		}
-		long num = key - flat;
-		return minKeys.get(i - 1) + num;
+		long realKey = minKeys.get(i - 1) + key - nums[i - 1];
+		if (realKey < 0) {
+			System.out.println("BUG: " + key + ", " + realKey);
+		}
+		return realKey;
 	}
 
 	@Override

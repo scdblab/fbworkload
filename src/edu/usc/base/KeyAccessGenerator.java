@@ -8,8 +8,8 @@ public class KeyAccessGenerator {
 
 	private final ZipfianGenerator zipfian;
 
-	public KeyAccessGenerator(Random rand, long items) {
-		zipfian = new ZipfianGenerator(items, rand);
+	public KeyAccessGenerator(Random rand, Configuration config, long items) {
+		zipfian = new ZipfianGenerator(items, config.getZipf(), rand);
 	}
 
 	public long get() {

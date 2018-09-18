@@ -25,19 +25,12 @@ public class ZipfianStats {
 	}
 
 	public static void main(String[] args) {
-		// int items = 1000000;
-		// for (int alpha = 1; alpha <= 10; alpha++) {
-		// System.out.println(
-		// String.format("%d:%.2f", alpha, (double) new ZipfianStats(alpha,
-		// items).mean() / (double) items));
-		//
-		// }
-		int items = 100000;
-		for (double constant = 0.9; constant <= 0.99; constant += 0.01) {
+		int items = 1000000;
+		for (double constant : new double[] { 0.5d, 0.99d }) {
 			System.out.println("####" + constant);
 			int[] reqs = new int[10];
 			ZipfianGenerator gen = new ZipfianGenerator(items, constant, new Random());
-			int total = 10000000;
+			int total = 100000000;
 			for (int i = 0; i < total; i++) {
 				long val = gen.nextValue().longValue();
 				reqs[(int) Math.log10(val + 1)]++;
@@ -47,7 +40,6 @@ public class ZipfianStats {
 				sum += (double) reqs[i] / (double) total;
 				System.out.println((int) Math.pow(10, i + 1) + "," + sum * 100);
 			}
-
 		}
 	}
 
