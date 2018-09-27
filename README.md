@@ -6,7 +6,7 @@ trace_specification.properties specifies input parameters. The program writes ge
 ```
 java -jar hoagie-trace-client.jar trace_specification.properties /tmp/output
 ```
-## Input
+### Input
 <table>
   <tr>
     <td><strong>Parameter</strong></td>
@@ -81,7 +81,7 @@ The trace is generated with a Zipfian distribution (alpha=100). The following fi
 ![Value Size CDF Graph](imgs/ValueCDF.png)
 ![Inter-arrival Gap CDF Graph](imgs/InterarrivalCDF.png)
 
-## Output
+### Output
 The generated trace is in the following format. 
 <table>
   <tr>
@@ -102,7 +102,7 @@ trace_specification.properties specifies input parameters.
 ```
 java -jar hoagie-lru-cache-client.jar trace_specification.properties
 ```
-## Output
+### Output
 It outputs cache stats after processing 1-second requests. 
 <table>
   <tr>
@@ -111,31 +111,31 @@ It outputs cache stats after processing 1-second requests.
   </tr>
   <tr>
     <td>seconds</td>
-    <td>The number of seconds of requests that have been processed</td>
+    <td>The number of seconds of requests that have been processed.</td>
   </tr>
   <tr>
     <td>misses</td>
-    <td>The number of misses within this second</td>
+    <td>The number of misses within this second.</td>
   </tr>
   <tr>
     <td>reads</td>
-    <td>The number of reads within this second</td>
+    <td>The number of reads within this second.</td>
   </tr>
   <tr>
     <td>num-entries-in-cache</td>
-    <td>The number of entries in the LRU cache within this second</td>
+    <td>The number of entries in the LRU cache within this second.</td>
   </tr>
   <tr>
     <td>evictions</td>
-    <td>The number of evictions within this second</td>
+    <td>The number of evictions within this second.</td>
   </tr>
   <tr>
     <td>miss-ratio</td>
-    <td>The number of misses divided by the number of reads within this second</td>
+    <td>The number of misses divided by the number of reads within this second.</td>
   </tr>
   <tr>
     <td>evict-miss-ratio</td>
-    <td>The number of evictions divided by the number of misses within this second</td>
+    <td>The number of evictions divided by the number of misses within this second.</td>
   </tr>
 </table>
 This is an example output.
