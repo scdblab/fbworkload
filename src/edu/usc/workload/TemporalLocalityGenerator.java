@@ -21,6 +21,10 @@ public class TemporalLocalityGenerator {
 
 	private long currentMinKey;
 
+	/**
+	 * We speculate data points in the tail of this distribution since the paper
+	 * does not provide them. It reuses data items in the past one day.
+	 */
 	private List<Double> locality = new ArrayList<Double>(
 			Arrays.<Double>asList(0.885, 0.04, 0.025, 0.008, 0.004, 0.003));
 

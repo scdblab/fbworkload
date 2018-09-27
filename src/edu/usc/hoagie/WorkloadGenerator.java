@@ -49,6 +49,7 @@ public class WorkloadGenerator {
 	private final Optional<File> outputFile;
 	private final Client client;
 	private Optional<BufferedWriter> bw = Optional.empty();
+	private List<WorkingSet> workingSetsCanBeDeleted = new ArrayList<>();
 
 	public WorkloadGenerator(Configuration config, Client client, Optional<File> outputFile) {
 		super();
@@ -110,6 +111,10 @@ public class WorkloadGenerator {
 			KeyAccessGenerator keyAccess = new KeyAccessGenerator(rand, config, workingSetSize);
 			int second = 1;
 
+			if (hour >= temporalLocalityGenerator.size()) {
+				workingSetsCanBeDeleted.add(workingSets.get(hour));
+			}
+
 			// Generate requests within this hour.
 			for (long now = 0; now < ONE_HOUR;) {
 				int microsecond = interarrivalGapGenerator.generateInterarrivalTime(hour);
@@ -160,5 +165,9 @@ public class WorkloadGenerator {
 			}
 		}
 		return workingSets;
+	}
+
+	public List<WorkingSet> getWorkingSetsCanBeDeleted() {
+		return workingSetsCanBeDeleted;
 	}
 }
