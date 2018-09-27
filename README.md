@@ -1,14 +1,10 @@
-# fbworkload
-This project generates a social networking workload based on published stats by Facebook [1, 2]. Berk et al. [1] provides statistical modelings of key-size, value-size, and inter-arrival gap distributions. Yuehai et al. [2] extends [1] by presenting more analysis results on cache misses.
-
-[1] Berk Atikoglu, Yuehai Xu, Eitan Frachtenberg, Song Jiang, and Mike Paleczny. 2012. Workload analysis of a large-scale key-value store. In Proceedings of the 12th ACM SIGMETRICS/PERFORMANCE joint international conference on Measurement and Modeling of Computer Systems (SIGMETRICS '12). ACM, New York, NY, USA, 53-64. DOI=http://dx.doi.org/10.1145/2254756.2254766
-
-[2] Yuehai Xu, Eitan Frachtenberg, Song Jiang, Mike Paleczny: Characterizing Facebook's Memcached Workload. IEEE Internet Computing 18(2): 41-49 (2014)
+# Hoagie: A Database and Workload Generator using Published Specifications 
+Hoagie is a plug-n-play workload and database generator to evaluate novel system architectures, design decisions, protocols, and algorithms. It uses published specifications to create a database of data items and a workload that references these data items. Hoagie's modular design enables an experimentalist to use it either offline or online. In offline mode, Hoagie outputs a trace file that can be used to issue requests to a target system. In online mode, Hoagie is plugged into an existing benchmark that invokes it to generate requests one at a time to its target system.
 
 ## Example command to generate a trace. 
-trace_specification.properties specifies input parameters. The program writes generated traces to /tmp/fb-trace.
+trace_specification.properties specifies input parameters. The program writes generated traces to /tmp/output.
 ```
-java -jar tracegen.jar trace_specification.properties /tmp/fb-trace
+java -jar hoagie-trace-client.jar trace_specification.properties /tmp/output
 ```
 ## Input
 <table>
@@ -33,18 +29,25 @@ java -jar tracegen.jar trace_specification.properties /tmp/fb-trace
     <td>The percentage of update requests in the generated trace</td>
   </tr>
   <tr>
-    <td>items</td>
+    <td>hours</td>
     <td>A positive integer</td>
-    <td>The total number of keys</td>
+    <td>The total number of hours to generate requests</td>
   </tr>
   <tr>
-    <td>requests</td>
-    <td>A positive integer</td>
-    <td>The total number of requests</td>
+    <td>seed</td>
+    <td>A integer</td>
+    <td>The seed used in the random generator. Hoagie generates the same sequence of requests given the same seed.</td>
+  </tr>
+  <tr>
+    <td>zipf</td>
+    <td>A positive double value</td>
+    <td>The zipfian contant that controls the popularity skew.</td>
   </tr>
 </table>
 
 ### Built-in Distributions
+Hoaige generates traces based on stats published by Facebook [1]. It contains several distributions. 
+[1] Berk Atikoglu, Yuehai Xu, Eitan Frachtenberg, Song Jiang, and Mike Paleczny. 2012. Workload analysis of a large-scale key-value store. In Proceedings of the 12th ACM SIGMETRICS/PERFORMANCE joint international conference on Measurement and Modeling of Computer Systems (SIGMETRICS '12). ACM, New York, NY, USA, 53-64. DOI=http://dx.doi.org/10.1145/2254756.2254766
 <table>
   <tr>
     <td>Name</td>
@@ -94,5 +97,51 @@ Operation is one of:  {READ, REPLACE, DELETE}. This is an example output. It rep
 ```
 READ,10499,58,9,12
 ```
+## Example command to evaluate an LRU cache.
+trace_specification.properties specifies input parameters.
+```
+java -jar hoagie-lru-cache-client.jar trace_specification.properties
+```
+## Output
+It outputs cache stats after processing 1-second requests. 
+<table>
+  <tr>
+    <td>Term</td>
+    <td>Definition</td>
+  </tr>
+  <tr>
+    <td>seconds</td>
+    <td>The number of seconds of requests that have been processed</td>
+  </tr>
+  <tr>
+    <td>misses</td>
+    <td>The number of misses within this second</td>
+  </tr>
+  <tr>
+    <td>reads</td>
+    <td>The number of reads within this second</td>
+  </tr>
+  <tr>
+    <td>num-entries-in-cache</td>
+    <td>The number of entries in the LRU cache within this second</td>
+  </tr>
+  <tr>
+    <td>evictions</td>
+    <td>The number of evictions within this second</td>
+  </tr>
+  <tr>
+    <td>miss-ratio</td>
+    <td>The number of misses divided by the number of reads within this second</td>
+  </tr>
+  <tr>
+    <td>evict-miss-ratio</td>
+    <td>The number of evictions divided by the number of misses within this second</td>
+  </tr>
+</table>
+This is an example output.
 
+```
+seconds,misses,reads,num-entries-in-cache,evictions,miss-ratio,evict-miss-ratio
+1,32328,47996,2810,28688,0.6736,0.8874
+```
 

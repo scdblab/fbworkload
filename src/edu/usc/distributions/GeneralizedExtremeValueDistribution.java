@@ -2,6 +2,9 @@ package edu.usc.distributions;
 
 /**
  * http://en.wikipedia.org/wiki/Generalized_extreme_value_distribution
+ * 
+ * @author Haoyu Huang <haoyuhua@usc.edu> University of Southern California
+ *
  */
 public class GeneralizedExtremeValueDistribution extends Distribution {
 	public static double EulerConstant = 0.5772156649015328606065120900824024310421;

@@ -3,6 +3,10 @@ package edu.usc.distributions;
 /**
  * An expression that generates a sequence of values, following some
  * distribution (Uniform, Zipfian, Sequential, etc.).
+ * 
+ * Copied from YCSB. https://github.com/brianfrankcooper/YCSB
+ * 
+ * @author YCSB contributors
  */
 public abstract class Generator<V> {
 	/**

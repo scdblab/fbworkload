@@ -29,6 +29,11 @@ import java.util.Random;
  *
  * The algorithm used here is from "Quickly Generating Billion-Record Synthetic
  * Databases", Jim Gray et al, SIGMOD 1994.
+ * 
+ * Copied from YCSB. https://github.com/brianfrankcooper/YCSB
+ * 
+ * @author YCSB contributors
+ * 
  */
 public class ZipfianGenerator extends NumberGenerator {
 	public static final double ZIPFIAN_CONSTANT = 0.99;
@@ -314,5 +319,37 @@ public class ZipfianGenerator extends NumberGenerator {
 	@Override
 	public double mean() {
 		throw new UnsupportedOperationException("@todo implement ZipfianGenerator.mean()");
+	}
+
+	public static double zipfCdfApprox(double k, double s, double N) {
+		if (k > N || k < 1)
+			throw new IllegalArgumentException("k must be between 1 and N");
+
+		double a = (Math.pow(k, 1 - s) - 1) / (1 - s) + 0.5 + Math.pow(k, -s) / 2 + s / 12
+				- Math.pow(k, -1 - s) * s / 12;
+		double b = (Math.pow(N, 1 - s) - 1) / (1 - s) + 0.5 + Math.pow(N, -s) / 2 + s / 12
+				- Math.pow(N, -1 - s) * s / 12;
+
+		return a / b;
+	}
+
+	public static void main(String[] args) {
+		int n = 10000000;
+
+		for (double alpha : new double[] { 0.27, 0.99 }) {
+			ZipfianGenerator gen = new ZipfianGenerator(n, alpha, new Random());
+			int cnt = 0;
+			int total = 10000000;
+			System.out.println(n / 10);
+			for (int i = 0; i < total; i++) {
+				if (gen.nextValue().longValue() < n / 10) {
+					cnt++;
+				}
+			}
+			System.out.println(cnt);
+			System.out.println(total);
+			System.out.println(cnt / total);
+		}
+
 	}
 }

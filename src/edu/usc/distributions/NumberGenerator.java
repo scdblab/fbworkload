@@ -3,6 +3,10 @@ package edu.usc.distributions;
 /**
  * A generator that is capable of generating numeric values.
  *
+ * Copied from YCSB. https://github.com/brianfrankcooper/YCSB
+ * 
+ * @author YCSB contributors
+ * 
  */
 public abstract class NumberGenerator extends Generator<Number> {
 	private Number lastVal;

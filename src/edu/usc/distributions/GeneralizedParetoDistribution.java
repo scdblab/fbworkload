@@ -3,7 +3,8 @@ package edu.usc.distributions;
 /**
  * https://en.wikipedia.org/wiki/Generalized_Pareto_distribution
  * 
- * @author haoyuh
+ * @author Haoyu Huang <haoyuhua@usc.edu> University of Southern California
+ *
  */
 public class GeneralizedParetoDistribution extends Distribution {
 	private final double loc;
