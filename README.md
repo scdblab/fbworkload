@@ -2,7 +2,7 @@
 Hoagie is a plug-n-play workload and database generator to evaluate novel system architectures, design decisions, protocols, and algorithms. It uses published specifications to create a database of data items and a workload that references these data items. Hoagie's modular design enables an experimentalist to use it either offline or online. In offline mode, Hoagie outputs a trace file that can be used to issue requests to a target system. In online mode, Hoagie is plugged into an existing benchmark that invokes it to generate requests one at a time to its target system.
 
 ## Example command to generate a trace
-trace_specification.properties specifies input parameters. The program writes generated traces to /tmp/output.
+trace_specification.properties specifies input parameters. The program writes generated traces to /tmp/output. Its main function is in https://github.com/scdblab/fbworkload/blob/bpod18/db/edu/usc/tracegen/TraceMain.java
 ```
 java -jar hoagie-trace-client.jar trace_specification.properties /tmp/output
 ```
@@ -99,7 +99,7 @@ Operation is one of:  {READ, REPLACE, DELETE}. This is an example output. It rep
 READ,10499,58,9,12
 ```
 ## Example command to evaluate an LRU cache
-trace_specification.properties specifies input parameters.
+trace_specification.properties specifies input parameters. Its main function is in https://github.com/scdblab/fbworkload/blob/bpod18/db/edu/usc/cache/LRUCacheMain.java
 ```
 java -jar hoagie-lru-cache-client.jar trace_specification.properties
 ```
