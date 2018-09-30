@@ -2,11 +2,11 @@
 Hoagie is a plug-n-play workload and database generator to evaluate novel system architectures, design decisions, protocols, and algorithms. It uses published specifications to create a database of data items and a workload that references these data items. Hoagie's modular design enables an experimentalist to use it either offline or online. In offline mode, Hoagie outputs a trace file that can be used to issue requests to a target system. In online mode, Hoagie is plugged into an existing benchmark that invokes it to generate requests one at a time to its target system.
 
 ## Example command to generate a trace
-trace_specification.properties specifies input parameters. The program writes generated traces to /tmp/output.
+trace_specification.properties specifies input parameters. The program writes generated traces to /tmp/output. Its main function is in https://github.com/scdblab/fbworkload/blob/bpod18/db/edu/usc/tracegen/TraceMain.java
 ```
 java -jar hoagie-trace-client.jar trace_specification.properties /tmp/output
 ```
-## Input
+### Input
 <table>
   <tr>
     <td><strong>Parameter</strong></td>
@@ -46,7 +46,8 @@ java -jar hoagie-trace-client.jar trace_specification.properties /tmp/output
 </table>
 
 ### Built-in Distributions
-Hoaige generates traces based on stats published by Facebook [1]. It contains several distributions. 
+Hoaige generates traces based on stats published by Facebook [1].
+
 [1] Berk Atikoglu, Yuehai Xu, Eitan Frachtenberg, Song Jiang, and Mike Paleczny. 2012. Workload analysis of a large-scale key-value store. In Proceedings of the 12th ACM SIGMETRICS/PERFORMANCE joint international conference on Measurement and Modeling of Computer Systems (SIGMETRICS '12). ACM, New York, NY, USA, 53-64. DOI=http://dx.doi.org/10.1145/2254756.2254766
 <table>
   <tr>
@@ -81,7 +82,7 @@ The trace is generated with a Zipfian distribution (alpha=100). The following fi
 ![Value Size CDF Graph](imgs/ValueCDF.png)
 ![Inter-arrival Gap CDF Graph](imgs/InterarrivalCDF.png)
 
-## Output
+### Output
 The generated trace is in the following format. 
 <table>
   <tr>
@@ -98,11 +99,11 @@ Operation is one of:  {READ, REPLACE, DELETE}. This is an example output. It rep
 READ,10499,58,9,12
 ```
 ## Example command to evaluate an LRU cache
-trace_specification.properties specifies input parameters.
+trace_specification.properties specifies input parameters. Its main function is in https://github.com/scdblab/fbworkload/blob/bpod18/db/edu/usc/cache/LRUCacheMain.java
 ```
 java -jar hoagie-lru-cache-client.jar trace_specification.properties
 ```
-## Output
+### Output
 It outputs cache stats after processing 1-second requests. 
 <table>
   <tr>
@@ -111,31 +112,31 @@ It outputs cache stats after processing 1-second requests.
   </tr>
   <tr>
     <td>seconds</td>
-    <td>The number of seconds of requests that have been processed</td>
+    <td>The number of seconds of requests that have been processed.</td>
   </tr>
   <tr>
     <td>misses</td>
-    <td>The number of misses within this second</td>
+    <td>The number of misses within this second.</td>
   </tr>
   <tr>
     <td>reads</td>
-    <td>The number of reads within this second</td>
+    <td>The number of reads within this second.</td>
   </tr>
   <tr>
     <td>num-entries-in-cache</td>
-    <td>The number of entries in the LRU cache within this second</td>
+    <td>The number of entries in the LRU cache within this second.</td>
   </tr>
   <tr>
     <td>evictions</td>
-    <td>The number of evictions within this second</td>
+    <td>The number of evictions within this second.</td>
   </tr>
   <tr>
     <td>miss-ratio</td>
-    <td>The number of misses divided by the number of reads within this second</td>
+    <td>The number of misses divided by the number of reads within this second.</td>
   </tr>
   <tr>
     <td>evict-miss-ratio</td>
-    <td>The number of evictions divided by the number of misses within this second</td>
+    <td>The number of evictions divided by the number of misses within this second.</td>
   </tr>
 </table>
 This is an example output.
